@@ -12,15 +12,15 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export function LoginCard() {
+export function RegisterCard() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>Entre com suas credenciais</CardDescription>
+        <CardTitle>Criar uma conta</CardTitle>
+        <CardDescription>Preencha os campos abaixo</CardDescription>
         <CardAction>
-          <Link href="/register">
-            <Button variant="link">Criar uma conta</Button>
+          <Link href="/">
+            <Button variant="link">Faça login</Button>
           </Link>
         </CardAction>
       </CardHeader>
@@ -42,12 +42,18 @@ export function LoginCard() {
               </div>
               <Input id="password" type="password" required />
             </div>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="repeat-password">Repetir senha</Label>
+              </div>
+              <Input id="repeat-password" type="password" required />
+            </div>
           </div>
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
         <Button type="submit" className="w-full">
-          Login
+          Criar conta
         </Button>
       </CardFooter>
     </Card>
