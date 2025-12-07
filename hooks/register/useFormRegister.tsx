@@ -1,5 +1,6 @@
 'use client';
 
+import { registerService } from '@/services/register/register.service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
@@ -33,7 +34,10 @@ export default function useFormRegister(): UseFormRegisterType {
   });
 
   function onRegisterFormSubmit(data: RegisterFormType) {
-    console.log(data);
+    registerService({
+      email: data.email,
+      password: data.password,
+    });
   }
 
   const onSubmit = async (event?: React.BaseSyntheticEvent) =>
