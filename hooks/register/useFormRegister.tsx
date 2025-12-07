@@ -8,7 +8,7 @@ import z from 'zod';
 const registerFormSchema = z
   .object({
     email: z.email('E-mail inválido'),
-    password: z.string().min(5, 'Senha muito curta'),
+    password: z.string().min(8, 'Senha muito curta'),
     confirmPassword: z.string().min(1, 'Confirmação de senha obrigatória'),
   })
   .refine((data) => data.password === data.confirmPassword, {
