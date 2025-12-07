@@ -19,36 +19,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import z from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import userFormRegister from '@/hooks/register/useFormRegister';
 
 export function RegisterCard() {
-  const registerFormSchema = z
-    .object({
-      email: z.email('E-mail inválido'),
-      password: z.string().min(5, 'Senha muito curta'),
-      confirmPassword: z.string().min(1, 'Confirmação de senha obrigatória'),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: 'Senhas diferentes',
-      path: ['confirmPassword'],
-    });
-
-  type RegisterFormType = z.infer<typeof registerFormSchema>;
-
-  const form = useForm<RegisterFormType>({
-    resolver: zodResolver(registerFormSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-      confirmPassword: '',
-    },
-  });
-
-  function onRegisterFormSubmit(data: RegisterFormType) {
-    console.log(data);
-  }
+  const { form, onSubmit } = userFormRegister();
 
   return (
     <Card className="w-full max-w-sm">
@@ -63,7 +37,7 @@ export function RegisterCard() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onRegisterFormSubmit)}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <FormField
