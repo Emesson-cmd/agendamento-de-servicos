@@ -2,7 +2,9 @@
 
 import { registerService } from '@/services/register/register.service';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Check, CircleX } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import z from 'zod';
 
 const registerFormSchema = z
@@ -33,11 +35,25 @@ export default function useFormRegister(): UseFormRegisterType {
     },
   });
 
-  function onRegisterFormSubmit(data: RegisterFormType) {
-    registerService({
-      email: data.email,
-      password: data.password,
-    });
+  async function onRegisterFormSubmit(data: RegisterFormType) {
+    try {
+      const result = await registerService({
+        email: data.email,
+        password: data.password,
+      });
+
+      toast.success('Sucesso', {
+        description: result.message,
+        icon: <Check />,
+      });
+    } catch (error) {
+      const err = error as Error;
+      toast.error('Erro ao realizar cadastro', {
+        description: err.message,
+        icon: <CircleX />,
+      });
+      return;
+    }
   }
 
   const onSubmit = async (event?: React.BaseSyntheticEvent) =>
