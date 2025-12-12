@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
         try {
           // Step 1: Call backend login endpoint
           const loginResponse = await fetch(
-            'http://localhost:3000/users/login',
+            `${process.env.API_URL}/users/login`,
             {
               method: 'POST',
               headers: {
@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
           const loginData = await loginResponse.json();
           const { authToken, refreshToken } = loginData;
 
-          const userResponse = await fetch('http://localhost:3000/users/me', {
+          const userResponse = await fetch(`${process.env.API_URL}/users/me`, {
             method: 'GET',
             headers: {
               Authorization: `Bearer ${authToken}`,

@@ -36,7 +36,7 @@ export async function registerService(
     body: JSON.stringify(data),
   };
 
-  const result = await fetch('http://localhost:3000/users', fetchOptions);
+  const result = await fetch(`${process.env.API_URL}/users`, fetchOptions);
 
   if (result.ok) {
     const output: RegisterServiceOutput = {
