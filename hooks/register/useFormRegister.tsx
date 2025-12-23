@@ -4,6 +4,8 @@ import { registerService } from '@/services/register/register.service';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Check, CircleX } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import z from 'zod';
 
@@ -23,6 +25,7 @@ type RegisterFormType = z.infer<typeof registerFormSchema>;
 export type UseFormRegisterType = {
   form: ReturnType<typeof useForm<RegisterFormType>>;
   onSubmit: (event?: React.BaseSyntheticEvent) => Promise<void>;
+  isLoading: boolean;
 };
 
 export default function useFormRegister(): UseFormRegisterType {
@@ -35,7 +38,11 @@ export default function useFormRegister(): UseFormRegisterType {
     },
   });
 
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   async function onRegisterFormSubmit(data: RegisterFormType) {
+    setIsLoading(true);
     try {
       const result = await registerService({
         email: data.email,
@@ -46,13 +53,17 @@ export default function useFormRegister(): UseFormRegisterType {
         description: result.message,
         icon: <Check />,
       });
+
+      form.reset();
+      router.push('/');
     } catch (error) {
       const err = error as Error;
       toast.error('Erro ao realizar cadastro', {
         description: err.message,
         icon: <CircleX />,
       });
-      return;
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -62,6 +73,7 @@ export default function useFormRegister(): UseFormRegisterType {
   const output: UseFormRegisterType = {
     form,
     onSubmit,
+    isLoading,
   };
 
   return output;

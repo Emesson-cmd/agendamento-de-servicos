@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { Check, CircleX } from 'lucide-react';
@@ -18,10 +19,12 @@ type LoginFormType = z.infer<typeof loginFormSchema>;
 export type UseFormLoginType = {
   form: ReturnType<typeof useForm<LoginFormType>>;
   onSubmit: (event?: React.BaseSyntheticEvent) => Promise<void>;
+  isLoading: boolean;
 };
 
 export default function useFormLogin(): UseFormLoginType {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<LoginFormType>({
     resolver: zodResolver(loginFormSchema),
@@ -32,6 +35,8 @@ export default function useFormLogin(): UseFormLoginType {
   });
 
   async function onLoginFormSubmit(data: LoginFormType) {
+    setIsLoading(true);
+
     try {
       const result = await signIn('credentials', {
         email: data.email,
@@ -44,6 +49,8 @@ export default function useFormLogin(): UseFormLoginType {
           description: 'Redirecionando para o dashboard...',
           icon: <Check />,
         });
+
+        form.reset();
         router.push('/dashboard');
       } else {
         toast.error('Erro ao fazer login', {
@@ -57,6 +64,8 @@ export default function useFormLogin(): UseFormLoginType {
         description: err.message,
         icon: <CircleX />,
       });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -66,6 +75,7 @@ export default function useFormLogin(): UseFormLoginType {
   const output: UseFormLoginType = {
     form,
     onSubmit,
+    isLoading,
   };
 
   return output;

@@ -19,10 +19,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Loader2 } from 'lucide-react';
 import userFormRegister from '@/hooks/register/useFormRegister';
 
 export function RegisterCard() {
-  const { form, onSubmit } = userFormRegister();
+  const { form, onSubmit, isLoading } = userFormRegister();
 
   return (
     <Card className="w-full max-w-sm">
@@ -106,8 +107,9 @@ export function RegisterCard() {
               </div>
             </div>
             <div className="flex flex-col gap-2 py-4">
-              <Button type="submit" className="w-full">
-                Criar conta
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading && <Loader2 className="animate-spin" />}
+                {isLoading ? 'Criando conta...' : 'Criar conta'}
               </Button>
             </div>
           </form>

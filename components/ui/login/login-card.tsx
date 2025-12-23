@@ -20,9 +20,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import useFormLogin from '@/hooks/login/useFormLogin';
+import { Loader2 } from 'lucide-react';
 
 export function LoginCard() {
-  const { form, onSubmit } = useFormLogin();
+  const { form, onSubmit, isLoading } = useFormLogin();
 
   return (
     <Card className="w-full max-w-sm">
@@ -84,7 +85,8 @@ export function LoginCard() {
             </div>
             <div className="flex flex-col gap-2 py-4">
               <Button type="submit" className="w-full">
-                Login
+                {isLoading && <Loader2 className="animate-spin" />}
+                {isLoading ? 'Entrando...' : 'Entrar'}
               </Button>
             </div>
           </form>
