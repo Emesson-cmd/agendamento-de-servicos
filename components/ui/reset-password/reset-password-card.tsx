@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 import {
   Card,
   CardAction,
@@ -26,7 +27,8 @@ interface ResetPasswordCardProps {
 }
 
 export function ResetPasswordCard({ token }: ResetPasswordCardProps) {
-  const { form, onSubmit } = useFormResetPassword(token);
+  const { form, onSubmit, isSubmitting, resetFields } =
+    useFormResetPassword(token);
 
   return (
     <Card className="w-full max-w-sm">
@@ -88,9 +90,24 @@ export function ResetPasswordCard({ token }: ResetPasswordCardProps) {
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2 py-4">
-              <Button type="submit" className="w-full">
-                Redefinir senha
+            <div className="flex gap-2 py-4">
+              <Button type="submit" className="flex-1" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="animate-spin mr-2" size={16} />
+                    Redefinindo...
+                  </>
+                ) : (
+                  'Redefinir senha'
+                )}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={resetFields}
+                disabled={isSubmitting}
+              >
+                Limpar
               </Button>
             </div>
           </form>

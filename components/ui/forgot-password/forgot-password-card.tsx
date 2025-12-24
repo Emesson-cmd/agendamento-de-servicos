@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 import {
   Card,
   CardAction,
@@ -22,7 +23,7 @@ import {
 import useFormForgotPassword from '@/hooks/forgot-password/useFormForgotPassword';
 
 export function ForgotPasswordCard() {
-  const { form, onSubmit } = useFormForgotPassword();
+  const { form, onSubmit, isSubmitting, resetFields } = useFormForgotPassword();
 
   return (
     <Card className="w-full max-w-sm">
@@ -63,9 +64,24 @@ export function ForgotPasswordCard() {
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2 py-4">
-              <Button type="submit" className="w-full">
-                Enviar solicitação
+            <div className="flex gap-2 py-4">
+              <Button type="submit" className="flex-1" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="animate-spin mr-2" size={16} />
+                    Enviando...
+                  </>
+                ) : (
+                  'Enviar solicitação'
+                )}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={resetFields}
+                disabled={isSubmitting}
+              >
+                Limpar
               </Button>
             </div>
           </form>

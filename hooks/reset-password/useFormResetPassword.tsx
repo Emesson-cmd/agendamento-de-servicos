@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Check, CircleX } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import z from 'zod';
 
@@ -23,12 +24,15 @@ type ResetPasswordFormType = z.infer<typeof resetPasswordFormSchema>;
 export type UseFormResetPasswordType = {
   form: ReturnType<typeof useForm<ResetPasswordFormType>>;
   onSubmit: (event?: React.BaseSyntheticEvent) => Promise<void>;
+  isSubmitting: boolean;
+  resetFields: () => void;
 };
 
 export default function useFormResetPassword(
   token: string
 ): UseFormResetPasswordType {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<ResetPasswordFormType>({
     resolver: zodResolver(resetPasswordFormSchema),
@@ -39,6 +43,7 @@ export default function useFormResetPassword(
   });
 
   async function onResetPasswordFormSubmit(data: ResetPasswordFormType) {
+    setIsSubmitting(true);
     try {
       const result = await resetPasswordService({
         token,
@@ -56,15 +61,21 @@ export default function useFormResetPassword(
         description: err.message,
         icon: <CircleX />,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
   const onSubmit = async (event?: React.BaseSyntheticEvent) =>
     form.handleSubmit(onResetPasswordFormSubmit)(event);
 
+  const resetFields = () => form.reset();
+
   const output: UseFormResetPasswordType = {
     form,
     onSubmit,
+    isSubmitting,
+    resetFields,
   };
 
   return output;
