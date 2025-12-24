@@ -19,20 +19,23 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import useFormLogin from '@/hooks/login/useFormLogin';
-import { Loader2 } from 'lucide-react';
+import useFormResetPassword from '@/hooks/reset-password/useFormResetPassword';
 
-export function LoginCard() {
-  const { form, onSubmit, isLoading } = useFormLogin();
+interface ResetPasswordCardProps {
+  token: string;
+}
+
+export function ResetPasswordCard({ token }: ResetPasswordCardProps) {
+  const { form, onSubmit } = useFormResetPassword(token);
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>Entre com suas credenciais</CardDescription>
+        <CardTitle>Redefinir senha</CardTitle>
+        <CardDescription>Digite sua nova senha</CardDescription>
         <CardAction>
-          <Link href="/register">
-            <Button variant="link">Criar uma conta</Button>
+          <Link href="/">
+            <Button variant="link">Voltar ao login</Button>
           </Link>
         </CardAction>
       </CardHeader>
@@ -43,36 +46,38 @@ export function LoginCard() {
               <div className="grid gap-2">
                 <FormField
                   control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="email">Seu e-mail</FormLabel>
-                      <FormControl>
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="email@example.com"
-                          required
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="password">Sua senha</FormLabel>
+                      <FormLabel htmlFor="password">Nova senha</FormLabel>
                       <FormControl>
                         <Input
                           id="password"
                           type="password"
+                          placeholder="Digite sua nova senha"
+                          required
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid gap-2">
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="confirmPassword">
+                        Confirmar senha
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          id="confirmPassword"
+                          type="password"
+                          placeholder="Confirme sua nova senha"
                           required
                           {...field}
                         />
@@ -83,20 +88,9 @@ export function LoginCard() {
                 />
               </div>
             </div>
-
-            <div className="text-right">
-              <Link
-                href="/forgot-password"
-                className="text-sm text-muted-foreground hover:underline"
-              >
-                Forgot Password?
-              </Link>
-            </div>
-
             <div className="flex flex-col gap-2 py-4">
               <Button type="submit" className="w-full">
-                {isLoading && <Loader2 className="animate-spin" />}
-                {isLoading ? 'Entrando...' : 'Entrar'}
+                Redefinir senha
               </Button>
             </div>
           </form>

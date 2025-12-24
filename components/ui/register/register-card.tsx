@@ -106,6 +106,16 @@ export function RegisterCard() {
                 />
               </div>
             </div>
+
+            <div className="text-right">
+              <Link
+                href="/forgot-password"
+                className="text-sm text-muted-foreground hover:underline"
+              >
+                Forgot Password?
+              </Link>
+            </div>
+
             <div className="flex flex-col gap-2 py-4">
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading && <Loader2 className="animate-spin" />}

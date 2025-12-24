@@ -19,20 +19,21 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import useFormLogin from '@/hooks/login/useFormLogin';
-import { Loader2 } from 'lucide-react';
+import useFormForgotPassword from '@/hooks/forgot-password/useFormForgotPassword';
 
-export function LoginCard() {
-  const { form, onSubmit, isLoading } = useFormLogin();
+export function ForgotPasswordCard() {
+  const { form, onSubmit } = useFormForgotPassword();
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>Entre com suas credenciais</CardDescription>
+        <CardTitle>Esqueci minha senha</CardTitle>
+        <CardDescription>
+          Digite seu e-mail para redefinir a senha
+        </CardDescription>
         <CardAction>
-          <Link href="/register">
-            <Button variant="link">Criar uma conta</Button>
+          <Link href="/">
+            <Button variant="link">Voltar ao login</Button>
           </Link>
         </CardAction>
       </CardHeader>
@@ -61,42 +62,10 @@ export function LoginCard() {
                   )}
                 />
               </div>
-
-              <div className="grid gap-2">
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel htmlFor="password">Sua senha</FormLabel>
-                      <FormControl>
-                        <Input
-                          id="password"
-                          type="password"
-                          required
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
             </div>
-
-            <div className="text-right">
-              <Link
-                href="/forgot-password"
-                className="text-sm text-muted-foreground hover:underline"
-              >
-                Forgot Password?
-              </Link>
-            </div>
-
             <div className="flex flex-col gap-2 py-4">
               <Button type="submit" className="w-full">
-                {isLoading && <Loader2 className="animate-spin" />}
-                {isLoading ? 'Entrando...' : 'Entrar'}
+                Enviar solicitação
               </Button>
             </div>
           </form>
